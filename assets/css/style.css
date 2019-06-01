@@ -1,12 +1,13 @@
 body{
-    background-color: beige;
+    background-color: #777777;
 }
 
 
 .col-md-6{
     padding-top: 10px;
-    padding-bottom: 10px;
+    padding-bottom: 5px;
 }
+
 #temp, #displayedWord, #guessesRemaining, #lettersGuessed {
     letter-spacing: 10px;
     font-family: 'Courier New', Courier, monospace;
@@ -14,12 +15,24 @@ body{
 
 #title{
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    height: 80px;
-    padding-top: 20px;
+    height: 100px;
+    padding: 10px;
+
 }
 
-#startMessageRow{
-    color: #d7f442;
-    height: 40px;
+#title img{
+    position: relative;
+    top:2%;
+    height: 100%;
+    max-width: 80%;
+}
+
+#cartoonImage{
+    width: 90%;
+    margin-top: 5vh;
+}
+
+#startMessage{
+    color: #e9da06;
 }
 

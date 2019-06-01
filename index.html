@@ -6,30 +6,25 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <script type="text/javascript" src="assets/javascript/game.js"></script>
     <title>Word Guess Game</title>
 </head>
-<body onload = "startGame()">
-
-    <div class="container border border-primary bg-secondary">
+<body>
+    <div class="container border border-primary bg-white">
         <div class="row">
-            <div class="col-md-12 text-center">
-                <h1 id="title">HANGMAN</h1>
-            </div>
-        </div>
-        <div class="row border-bottom border-primary">
-            <div class="col-md-12 text-center" id="startMessageRow">
-                <script type="text/javascript" src="assets/javascript/game.js"></script>
-                <h3 id="startMessage">Press any key to start game.</h3>
+            <div class="col-md-12 text-center" id="title">
+                <img src="assets/images/Hangman.PNG">
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6 text-center border border-primary"></div>
             <div class="col-md-6 text-center border border-primary">
-                <script type="text/javascript" src="assets/javascript/game.js"></script>
+                <img id="cartoonImage">
+                <!-- <img id="cartoonImage" src="assets/images/smurfs.jpg"> -->
+            </div>
+            <div class="col-md-6 text-center border border-primary">
+                <h3 id="startMessage">Press any key to start game.</h3>
                 <h2>Wins</h2>
-                <h2 id="wins"></h2>
-                <h2>Temp</h2>
-                <h2 id="temp"></h2>
+                <h2 id="wins">0</h2>
                 <h2>Current Word</h2>
                 <h2 id = "displayedWord">...</h2>
                 <h2>Number of Guesses Remaining</h2> 

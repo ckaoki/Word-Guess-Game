@@ -1,15 +1,15 @@
-console.log("hello world");
 var cartoonsToGuess = [
-    {cartoon:"DUCKTALES", hint:"characters were ducks"},
-    {cartoon:"GI JOE", hint:"elite strike force battling COBRA"},
-    {cartoon:"HEMAN", hint:"Had villian named Skeletor" },
-    {cartoon:"GHOSTBUSTERS", hint:"paranormal investigators" },
-    {cartoon:"ROBOTECH", hint:"anime in which humans battle aliens" },
-    {cartoon:"THE SIMPSONS", hint:"DOH!" },
-    {cartoon:"TEENAGEMUTANT NINJA TURTLES", hint:"reptile warriors" },
-    {cartoon:"THUNDERCATS", hint:"feline warriors" },
-    {cartoon:"TRANSFORMERS", hint:"lifeforms from Cybertron" },
-    {cartoon:"VOLTRON", hint:"adapted from anime, protagonist was composed of 5 catlike robots" }
+    {cartoon:"SMURFS", hint:"little blue creatures", image:"smurfs.jpg"},
+    {cartoon:"DUCKTALES", hint:"characters were ducks", image:"ducktales.jpg"},
+    {cartoon:"GI JOE", hint:"elite strike force battling COBRA", image:"GIJoe.jpg"},
+    {cartoon:"HEMAN", hint:"Had villian named Skeletor", image:"heman.jpg"},
+    {cartoon:"GHOSTBUSTERS", hint:"paranormal investigators", image:"ghostbusters.jpg"},
+    {cartoon:"ROBOTECH", hint:"anime in which humans battle aliens", image:"robotech.jpg"},
+    {cartoon:"THE SIMPSONS", hint:"DOH!", image:"simpsons.jpg"},
+    {cartoon:"TEENAGEMUTANT NINJA TURTLES", hint:"reptile warriors", image:"turtles.jpeg"},
+    {cartoon:"THUNDERCATS", hint:"feline warriors", image:"thundercats.jpg"},
+    {cartoon:"TRANSFORMERS", hint:"lifeforms from Cybertron", image:"transformers.jpg"},
+    {cartoon:"VOLTRON", hint:"adapted from anime, protagonist was composed of 5 catlike robots", image:"voltron.jpg"}
 ];
 
 var currentCartoon = {cartoon:"", hint:""};
@@ -19,43 +19,33 @@ var lettersGuessed = "";
 var numWrongGuesses = 0;
 var numWins = 0;
 var numLosses = 0;
-var numGuessesRemaining = 0;
+var numGuessesRemaining = 10;
 var gameRunning = false;
 var gameNumber = 0;
 var keyCode = -1;
+var keyPressed = '';
 
-
-function startGame() {
-    
-    
-    var currentCartoon = getNewCartoon(gameNumber);
-    var aaa = document.getElementById("temp"); //TODO:delete
-    aaa.textContent = currentCartoon.cartoon; //TODO:delete
-    lettersGuessed = "";
-    currentWord = currentCartoon.cartoon;
-
-    guessedWord = "_".repeat(currentCartoon.cartoon.length);
-    // replace "_" with " " in guessed word whever spaces should exist
-    for(var i=0; i<=currentWord.length; i++){
-        if(currentWord[i] === " "){
-            guessedWord = guessedWord.replaceAt(i, " ");
-        }                  
-    }
-    document.getElementById("displayedWord").textContent = guessedWord;
-    document.getElementById("lettersGuessed").textContent = "";
+// function to replace character at index specified
+String.prototype.replaceAt=function(index, replacement) {
+    return this.substr(0, index) + replacement+ this.substr(index + replacement.length);
 }
 
-
+// get new cartoon from array
 function getNewCartoon(index){
     return(cartoonsToGuess[index]);
 }
 
-// hide start message
-function isGameRunning(){
-    if (!gameRunning){
+// main game logic
+function playGame(){
+    if (gameRunning){
+        checkKeyPressed();
+        checkGameStatus();
+    }
+    else{ // not running start new game
         document.getElementById("startMessage").style.display="none";
         startGame();
         gameRunning=true;
+        // generate number of next word to guess
         if(gameNumber<(cartoonsToGuess.length-1)){
             gameNumber++;
         }
@@ -63,17 +53,48 @@ function isGameRunning(){
             gameNumber = 0;
         }
     }
-    else
-    {
-        checkKeyPressed();
-        checkGameStatus();
+}
+
+// start game
+function startGame() {    
+    currentCartoon = getNewCartoon(gameNumber);
+    numGuessesRemaining = 10;
+    lettersGuessed = "";
+    currentWord = currentCartoon.cartoon;
+    guessedWord = "_".repeat(currentCartoon.cartoon.length);
+
+    // replace "_" with " " in guessed word whever spaces should exist
+    for(var i=0; i<=currentWord.length; i++){
+        if(currentWord[i] === " "){
+            guessedWord = guessedWord.replaceAt(i, " ");
+        }                  
+    }
+
+    // update page
+    document.getElementById("displayedWord").textContent = guessedWord;
+    document.getElementById("guessesRemaining").textContent=numGuessesRemaining;
+    document.getElementById("lettersGuessed").textContent = "_";
+    document.getElementById("cartoonImage").setAttribute("src", "assets/images/"+currentCartoon.image);
+}
+
+// check if word has been guessed 
+function checkGameStatus(){
+    if(numGuessesRemaining > 0){
+        if(guessedWord === currentWord){
+            gameRunning = false;
+            document.getElementById("wins").textContent = ++numWins;
+            document.getElementById("startMessage").style.display="";
+        }
+    }
+    else{ // game over
+        console.log("remain " +numGuessesRemaining);
+        document.getElementById("startMessage").style.display="";
+        gameRunning = false;
     }
 }
 
-String.prototype.replaceAt=function(index, replacement) {
-    return this.substr(0, index) + replacement+ this.substr(index + replacement.length);
-}
-
+// check if key pressed is valid and in current word. 
+// heavy lifting done here.
 function checkKeyPressed(){
     // check if key alpha
     if(keyCode >= 65 && keyCode <= 90){
@@ -82,56 +103,32 @@ function checkKeyPressed(){
             // new letter, add to guessed letters and display.
             lettersGuessed += keyPressed;
             document.getElementById("lettersGuessed").textContent = lettersGuessed;
-            // check that letter is in current word and not in displayed word
+            // letter is in current word and not in guessed letters
             if((currentWord.indexOf(keyPressed)>=0) && (guessedWord.indexOf(keyPressed)==-1))
             {
-                // add all instances of letter to displayedWord;
+                // add all instances of letter to guessed word;
                 for(var i=0; i<=currentWord.length; i++){
                     if(currentWord[i] === keyPressed){
                         guessedWord = guessedWord.replaceAt(i, keyPressed);
                     }                  
                 }
-                // if letter in word update displayed word.
+                // update displayed word.
                 document.getElementById("displayedWord").textContent = guessedWord;
             }
-
-                
-            // TODO: if word is complete increment wins and prompt user to press any key to continue
-            // TODO: if letter is not in word decrement guesses remaining.
-            // TODO: if 
-
-            // TODO: if in current word update display
-            // TODO:
-        // letter already guess, do nothing.        
+            // letter is not in current word or letters guessed, decrement guesses remaining.
+            // update page.
+            else if((currentWord.indexOf(keyPressed)==-1) && (guessedWord.indexOf(keyPressed)==-1)){
+                numGuessesRemaining--;
+                document.getElementById("guessesRemaining").textContent=numGuessesRemaining;
+            }
+            // letter already guessed, do nothing.        
         }
     }  
 }
 
-function checkGameStatus(){
-    if(guessedWord === currentWord){
-        numWins++;
-        document.getElementById("wins").textContent = numWins;
-        gameRunning = false;
-        document.getElementById("startMessage").style.display="";
-    }
-}
-
-//TODO: Const Array of words to guess
-//TODO: possibly array of object {quessWord, Hint}
-//TODO: pick random word
-//TODO: display word
-//TODO: require user to press any key
-//TODO: search for user key in word
-//TODO: determine results  
-//TODO: determine win/loss
-//TODO: update display
-//TODO:
-//TODO:
-//TODO:
-//TODO:
-var keyPressed = '';
+// user keystroke monitoring
 document.onkeyup = function(event) {
     keyCode = event.keyCode;
     keyPressed = event.key.toUpperCase();
-    isGameRunning();
+    playGame();
 }
