@@ -1,0 +1,25 @@
+body{
+    background-color: beige;
+}
+
+
+.col-md-6{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+#temp, #displayedWord, #guessesRemaining, #lettersGuessed {
+    letter-spacing: 10px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+#title{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    height: 80px;
+    padding-top: 20px;
+}
+
+#startMessageRow{
+    color: #d7f442;
+    height: 40px;
+}
+
